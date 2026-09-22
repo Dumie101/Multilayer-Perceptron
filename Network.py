@@ -1,24 +1,41 @@
 import numpy as np
 
-class Network:
-    def __init__(self, sizes):
-        self.num_layers = len(sizes)
-        self.sizes = sizes
+# Number of neurons in each layer
+sizes = [2,3,1]
 
-        self.biases = []
-        for layer in sizes[1:]:
-            layer_biases = np.random.rand(layer, 1)
-            self.biases.append(layer_biases)
+# Create the biases
+biases = []
 
-        self.weights = []
-        for input_layer, output_layer in zip(sizes[:-1], sizes[1:]):
-            layer_weights = np.random.rand(output_layer, input_layer)
-            self.weights.append(layer_weights)
+for layer_size in sizes[1:]:
+    bias = np.random.rand(layer_size, 1)
+    biases.append(bias)
 
-    def sigmoid(self, z):
-        return 1.0 / (1.0 + np.exp(-z))
+# Create the weights
+weights = []
 
-    def feedforward(self, a):
-        for b, w in zip(self.biases, self.weights):
-            a = self.sigmoid(np.dot(w, a) + b)
-        return a
+for i in range(len(sizes) - 1):
+    number_of_inputs = sizes[i]
+    number_of_outputs = sizes[i + 1]
+
+    weight = np.random.rand(number_of_outputs, number_of_inputs)
+    weights.append(weight)
+
+# Input values
+a = np.array([
+    [1],
+    [0],
+])
+
+# Pass the input through each layer
+for i in range(len(weights)):
+    weight = weights[i]
+    bias = biases[i]
+
+    z = np.dot(weight, a) + bias
+
+    # Apply sigmoid
+    a = 1 / (1 + np.exp(-z))
+    print(a)
+
+
+print(a)
